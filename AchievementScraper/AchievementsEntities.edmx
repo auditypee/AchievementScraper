@@ -1,0 +1,404 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AchievementsDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Achievement">
+          <Key>
+            <PropertyRef Name="AchievementId" />
+          </Key>
+          <Property Name="AchievementId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
+          <Property Name="Runescore" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchievementsCategories">
+          <Key>
+            <PropertyRef Name="AchievementId" />
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="AchievementId" Type="int" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AchievementsSubcategories">
+          <Key>
+            <PropertyRef Name="AchievementId" />
+            <PropertyRef Name="SubcategoryId" />
+          </Key>
+          <Property Name="AchievementId" Type="int" Nullable="false" />
+          <Property Name="SubcategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="QuestReq">
+          <Key>
+            <PropertyRef Name="QuestReq" />
+          </Key>
+          <Property Name="QuestReq" Type="int" Nullable="false" />
+          <Property Name="Quest" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AchievementId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SkillReq">
+          <Key>
+            <PropertyRef Name="SkillsReqId" />
+          </Key>
+          <Property Name="SkillsReqId" Type="int" Nullable="false" />
+          <Property Name="Skill" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Level" Type="int" Nullable="false" />
+          <Property Name="AchievementId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="SubcategoryId" />
+          </Key>
+          <Property Name="SubcategoryId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CategoryId" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Achievement_Category">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1" />
+          <End Role="AchievementsCategories" Type="Self.AchievementsCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="AchievementId" />
+            </Principal>
+            <Dependent Role="AchievementsCategories">
+              <PropertyRef Name="AchievementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Achievement_Subcategory">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1" />
+          <End Role="AchievementsSubcategories" Type="Self.AchievementsSubcategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="AchievementId" />
+            </Principal>
+            <Dependent Role="AchievementsSubcategories">
+              <PropertyRef Name="AchievementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Category_Achievement">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="AchievementsCategories" Type="Self.AchievementsCategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="AchievementsCategories">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestReq_ToAchievement">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1" />
+          <End Role="QuestReq" Type="Self.QuestReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="AchievementId" />
+            </Principal>
+            <Dependent Role="QuestReq">
+              <PropertyRef Name="AchievementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SkillReq_ToAchievement">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1" />
+          <End Role="SkillReq" Type="Self.SkillReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="AchievementId" />
+            </Principal>
+            <Dependent Role="SkillReq">
+              <PropertyRef Name="AchievementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subcategory_Achievement">
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="1" />
+          <End Role="AchievementsSubcategories" Type="Self.AchievementsSubcategories" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subcategory">
+              <PropertyRef Name="SubcategoryId" />
+            </Principal>
+            <Dependent Role="AchievementsSubcategories">
+              <PropertyRef Name="SubcategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subcategory_ToCategory">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AchievementsDatabaseModelStoreContainer">
+          <EntitySet Name="Achievement" EntityType="Self.Achievement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementsCategories" EntityType="Self.AchievementsCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AchievementsSubcategories" EntityType="Self.AchievementsSubcategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestReq" EntityType="Self.QuestReq" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SkillReq" EntityType="Self.SkillReq" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subcategory" EntityType="Self.Subcategory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Achievement_Category" Association="Self.FK_Achievement_Category">
+            <End Role="Achievement" EntitySet="Achievement" />
+            <End Role="AchievementsCategories" EntitySet="AchievementsCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Achievement_Subcategory" Association="Self.FK_Achievement_Subcategory">
+            <End Role="Achievement" EntitySet="Achievement" />
+            <End Role="AchievementsSubcategories" EntitySet="AchievementsSubcategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Category_Achievement" Association="Self.FK_Category_Achievement">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="AchievementsCategories" EntitySet="AchievementsCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestReq_ToAchievement" Association="Self.FK_QuestReq_ToAchievement">
+            <End Role="Achievement" EntitySet="Achievement" />
+            <End Role="QuestReq" EntitySet="QuestReq" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SkillReq_ToAchievement" Association="Self.FK_SkillReq_ToAchievement">
+            <End Role="Achievement" EntitySet="Achievement" />
+            <End Role="SkillReq" EntitySet="SkillReq" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subcategory_Achievement" Association="Self.FK_Subcategory_Achievement">
+            <End Role="Subcategory" EntitySet="Subcategory" />
+            <End Role="AchievementsSubcategories" EntitySet="AchievementsSubcategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subcategory_ToCategory" Association="Self.FK_Subcategory_ToCategory">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Subcategory" EntitySet="Subcategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AchievementsDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Achievement">
+          <Key>
+            <PropertyRef Name="AchievementId" />
+          </Key>
+          <Property Name="AchievementId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Runescore" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="QuestReqs" Relationship="Self.FK_QuestReq_ToAchievement" FromRole="Achievement" ToRole="QuestReq" />
+          <NavigationProperty Name="SkillReqs" Relationship="Self.FK_SkillReq_ToAchievement" FromRole="Achievement" ToRole="SkillReq" />
+          <NavigationProperty Name="Categories" Relationship="Self.AchievementsCategories" FromRole="Achievement" ToRole="Category" />
+          <NavigationProperty Name="Subcategories" Relationship="Self.AchievementsSubcategories" FromRole="Achievement" ToRole="Subcategory" />
+        </EntityType>
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CategoryId" />
+          </Key>
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Subcategories" Relationship="Self.FK_Subcategory_ToCategory" FromRole="Category" ToRole="Subcategory" />
+          <NavigationProperty Name="Achievements" Relationship="Self.AchievementsCategories" FromRole="Category" ToRole="Achievement" />
+        </EntityType>
+        <EntityType Name="QuestReq">
+          <Key>
+            <PropertyRef Name="QuestReq1" />
+          </Key>
+          <Property Name="QuestReq1" Type="Int32" Nullable="false" />
+          <Property Name="Quest" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AchievementId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Achievement" Relationship="Self.FK_QuestReq_ToAchievement" FromRole="QuestReq" ToRole="Achievement" />
+        </EntityType>
+        <EntityType Name="SkillReq">
+          <Key>
+            <PropertyRef Name="SkillsReqId" />
+          </Key>
+          <Property Name="SkillsReqId" Type="Int32" Nullable="false" />
+          <Property Name="Skill" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Level" Type="Int32" Nullable="false" />
+          <Property Name="AchievementId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Achievement" Relationship="Self.FK_SkillReq_ToAchievement" FromRole="SkillReq" ToRole="Achievement" />
+        </EntityType>
+        <EntityType Name="Subcategory">
+          <Key>
+            <PropertyRef Name="SubcategoryId" />
+          </Key>
+          <Property Name="SubcategoryId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CategoryId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Category" Relationship="Self.FK_Subcategory_ToCategory" FromRole="Subcategory" ToRole="Category" />
+          <NavigationProperty Name="Achievements" Relationship="Self.AchievementsSubcategories" FromRole="Subcategory" ToRole="Achievement" />
+        </EntityType>
+        <Association Name="FK_QuestReq_ToAchievement">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1" />
+          <End Role="QuestReq" Type="Self.QuestReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="AchievementId" />
+            </Principal>
+            <Dependent Role="QuestReq">
+              <PropertyRef Name="AchievementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SkillReq_ToAchievement">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="1" />
+          <End Role="SkillReq" Type="Self.SkillReq" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Achievement">
+              <PropertyRef Name="AchievementId" />
+            </Principal>
+            <Dependent Role="SkillReq">
+              <PropertyRef Name="AchievementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subcategory_ToCategory">
+          <End Role="Category" Type="Self.Category" Multiplicity="1" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="CategoryId" />
+            </Principal>
+            <Dependent Role="Subcategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AchievementsCategories">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <End Role="Category" Type="Self.Category" Multiplicity="*" />
+        </Association>
+        <Association Name="AchievementsSubcategories">
+          <End Role="Achievement" Type="Self.Achievement" Multiplicity="*" />
+          <End Role="Subcategory" Type="Self.Subcategory" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="AchievementsDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Achievements" EntityType="Self.Achievement" />
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="QuestReqs" EntityType="Self.QuestReq" />
+          <EntitySet Name="SkillReqs" EntityType="Self.SkillReq" />
+          <EntitySet Name="Subcategories" EntityType="Self.Subcategory" />
+          <AssociationSet Name="FK_QuestReq_ToAchievement" Association="Self.FK_QuestReq_ToAchievement">
+            <End Role="Achievement" EntitySet="Achievements" />
+            <End Role="QuestReq" EntitySet="QuestReqs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SkillReq_ToAchievement" Association="Self.FK_SkillReq_ToAchievement">
+            <End Role="Achievement" EntitySet="Achievements" />
+            <End Role="SkillReq" EntitySet="SkillReqs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subcategory_ToCategory" Association="Self.FK_Subcategory_ToCategory">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Subcategory" EntitySet="Subcategories" />
+          </AssociationSet>
+          <AssociationSet Name="AchievementsCategories" Association="Self.AchievementsCategories">
+            <End Role="Achievement" EntitySet="Achievements" />
+            <End Role="Category" EntitySet="Categories" />
+          </AssociationSet>
+          <AssociationSet Name="AchievementsSubcategories" Association="Self.AchievementsSubcategories">
+            <End Role="Achievement" EntitySet="Achievements" />
+            <End Role="Subcategory" EntitySet="Subcategories" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AchievementsDatabaseModelStoreContainer" CdmEntityContainer="AchievementsDatabaseEntities">
+          <EntitySetMapping Name="Achievements">
+            <EntityTypeMapping TypeName="AchievementsDatabaseModel.Achievement">
+              <MappingFragment StoreEntitySet="Achievement">
+                <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Runescore" ColumnName="Runescore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="AchievementsDatabaseModel.Category">
+              <MappingFragment StoreEntitySet="Category">
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="QuestReqs">
+            <EntityTypeMapping TypeName="AchievementsDatabaseModel.QuestReq">
+              <MappingFragment StoreEntitySet="QuestReq">
+                <ScalarProperty Name="QuestReq1" ColumnName="QuestReq" />
+                <ScalarProperty Name="Quest" ColumnName="Quest" />
+                <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SkillReqs">
+            <EntityTypeMapping TypeName="AchievementsDatabaseModel.SkillReq">
+              <MappingFragment StoreEntitySet="SkillReq">
+                <ScalarProperty Name="SkillsReqId" ColumnName="SkillsReqId" />
+                <ScalarProperty Name="Skill" ColumnName="Skill" />
+                <ScalarProperty Name="Level" ColumnName="Level" />
+                <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subcategories">
+            <EntityTypeMapping TypeName="AchievementsDatabaseModel.Subcategory">
+              <MappingFragment StoreEntitySet="Subcategory">
+                <ScalarProperty Name="SubcategoryId" ColumnName="SubcategoryId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AchievementsCategories" TypeName="AchievementsDatabaseModel.AchievementsCategories" StoreEntitySet="AchievementsCategories">
+            <EndProperty Name="Achievement">
+              <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
+            </EndProperty>
+            <EndProperty Name="Category">
+              <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="AchievementsSubcategories" TypeName="AchievementsDatabaseModel.AchievementsSubcategories" StoreEntitySet="AchievementsSubcategories">
+            <EndProperty Name="Achievement">
+              <ScalarProperty Name="AchievementId" ColumnName="AchievementId" />
+            </EndProperty>
+            <EndProperty Name="Subcategory">
+              <ScalarProperty Name="SubcategoryId" ColumnName="SubcategoryId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

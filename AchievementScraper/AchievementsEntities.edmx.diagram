@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2b2ab030fc834b7f8e0dfc187db18247" Name="Diagram1">
+        <EntityTypeShape EntityType="AchievementsDatabaseModel.Achievement" Width="1.5" PointX="5.25" PointY="2.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AchievementsDatabaseModel.Category" Width="1.5" PointX="3.125" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AchievementsDatabaseModel.QuestReq" Width="1.5" PointX="7.375" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AchievementsDatabaseModel.SkillReq" Width="1.5" PointX="3.125" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AchievementsDatabaseModel.Subcategory" Width="1.5" PointX="7.25" PointY="0.5" IsExpanded="true" />
+        <AssociationConnector Association="AchievementsDatabaseModel.FK_QuestReq_ToAchievement" ManuallyRouted="false" />
+        <AssociationConnector Association="AchievementsDatabaseModel.FK_SkillReq_ToAchievement" ManuallyRouted="false" />
+        <AssociationConnector Association="AchievementsDatabaseModel.FK_Subcategory_ToCategory" ManuallyRouted="false" />
+        <AssociationConnector Association="AchievementsDatabaseModel.AchievementsCategories" ManuallyRouted="false" />
+        <AssociationConnector Association="AchievementsDatabaseModel.AchievementsSubcategories" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
