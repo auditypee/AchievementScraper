@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AchievementScraper
+namespace AchievementScraper.Persistence
 {
     using System;
     using System.Collections.Generic;

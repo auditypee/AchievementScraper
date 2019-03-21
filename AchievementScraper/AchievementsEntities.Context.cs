@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AchievementScraper
+namespace AchievementScraper.Persistence
 {
     using System;
     using System.Data.Entity;
@@ -30,5 +30,6 @@ namespace AchievementScraper
         public virtual DbSet<QuestReq> QuestReqs { get; set; }
         public virtual DbSet<SkillReq> SkillReqs { get; set; }
         public virtual DbSet<Subcategory> Subcategories { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

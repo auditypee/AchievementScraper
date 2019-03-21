@@ -7,14 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AchievementScraper
+namespace AchievementScraper.Persistence
 {
     using System;
     using System.Collections.Generic;
     
     public partial class QuestReq
     {
-        public int QuestReq1 { get; set; }
+        public int QuestReqId { get; set; }
         public string Quest { get; set; }
         public int AchievementId { get; set; }
     

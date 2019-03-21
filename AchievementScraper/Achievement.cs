@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AchievementScraper
+namespace AchievementScraper.Persistence
 {
     using System;
     using System.Collections.Generic;
@@ -27,6 +27,8 @@ namespace AchievementScraper
         public string Name { get; set; }
         public string Description { get; set; }
         public int Runescore { get; set; }
+        public string Members { get; set; }
+        public string Link { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestReq> QuestReqs { get; set; }
