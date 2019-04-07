@@ -9,21 +9,29 @@ using System.IO;
 using System.Text.RegularExpressions;
 using AchievementScraper.Persistence;
 
-namespace AchivementScraper.Domain
+namespace AchievementScraper.Domain
 {
     public class Scrape
     {
-        private readonly string LOAURL = @"https://runescape.wiki/w/List_of_achievements";
-        private readonly string RSWIKIURL = @"https://runescape.wiki";
-        public List<AchievementObject> AchievementObjects { get; set; }
-        
-        public Scrape()
+        private static readonly string LOAURL = @"https://runescape.wiki/w/List_of_achievements";
+        private static readonly string RSWIKIURL = @"https://runescape.wiki";
+        private static readonly List<string> skillsList = new List<string>
+        {
+            "Attack", "Strength", "Defence", "Ranged", "Prayer", "Magic", "Constitution", "Crafting", "Mining", "Smithing", "Fishing",
+            "Cooking", "Firemaking", "Woodcutting", "Runecrafting", "Dungeoneering", "Fletching", "Agility", "Herblore", "Thieving", "Slayer",
+            "Farming", "Construction", "Hunter", "Summoning", "Divination", "Invention"
+        };
+
+        public static List<AchievementObject> AchievementObjects { get; set; }
+
+        public static void BeginScraping()
         {
             AchievementObjects = GetDataAsObjects();
         }
-        private List<AchievementObject> GetDataAsObjects()
+
+        private static List<AchievementObject> GetDataAsObjects()
         {
-            List<List<string>> tableData = new List<List<string>>();
+            List<AchievementObject> achievements = new List<AchievementObject>();
 
             using (WebClient wb = new WebClient())
             {
@@ -32,78 +40,93 @@ namespace AchivementScraper.Domain
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(listofachievementsString);
 
-                tableData = GetData(tableData, htmlDoc);
+                achievements = GetData(htmlDoc);
                 // removes the first in the list because it is unnecessary
-                tableData.RemoveAt(0);
+                achievements.RemoveAt(0);
             }
-            List<AchievementObject> achievements = ConvertTableToObj(tableData);
-            
+
             return achievements;
         }
 
-        private List<List<string>> GetData(List<List<string>> tableData, HtmlDocument htmlDoc)
+        public static List<AchievementObject> GetData(HtmlDocument htmlDoc)
         {
+            List<AchievementObject> tableData = new List<AchievementObject>();
+
             // select the entire table that contains the achievements data
             var loaTable = htmlDoc.DocumentNode.SelectSingleNode("//*[@id='mw-content-text']/div/table[1]/tbody");
             // collects all the rows from the table
             var loaRows = loaTable.SelectNodes(".//tr");
 
-            // parses through each row to extract the data
             foreach (var row in loaRows)
             {
-                List<string> currentRowValues = new List<string>();
-                // parses through each column to extract individual data
-                foreach (var column in row.ChildNodes)
-                {
-                    // makes sure that no empty things are collected
-                    if (!string.IsNullOrWhiteSpace(column.InnerText))
-                    {
-                        // HACK: - could possibly remove these few lines?
-                        // removes carriage returns, newlines, and tabs 
-                        // gets the html tag because HAP can't retain <br> from InnerText
-                        string data = Regex.Replace(column.InnerHtml, @"\r|\n|\t", string.Empty);
-                        // removes Name's html tags
-                        data = Regex.Replace(data, @".*\>(.*)\<\/a\>", @"$1");
-                        // removes <p><br></p> due to Runescore
-                        data = Regex.Replace(data, @"\<p\>\<br\>\</p\>", string.Empty);
-                        // separates text by br and changes it to a delimiter ':'
-                        data = Regex.Replace(data, @"\<br\>", "|");
+                AchievementObject achievementData = GetAchievementRow(row);
 
+                tableData.Add(achievementData);
 
-                        //string data = Regex.Replace(column.InnerText, @"\r|\n|\t", ":");
-                        currentRowValues.Add(data);
-                    }
-                }
-                // gets the link
-                var link = row.SelectSingleNode(".//a").Attributes["href"].Value;
-                currentRowValues.Add(link);
-                tableData.Add(currentRowValues);
-            }
-            return tableData;
-        }
-
-
-        private List<AchievementObject> ConvertTableToObj(List<List<string>> tableData)
-        {
-            int i = 0;
-            List<AchievementObject> achievements = new List<AchievementObject>();
-            foreach (var tableRow in tableData)
-            {
-                AchievementObject achievement = InitAchievementObj(tableRow);
-                achievement = GetRequirementsAsObj(achievement);
-                
-                achievements.Add(achievement);
-
-                string line = AchObjToString(achievement);
-                //Console.WriteLine(line);
-                System.Diagnostics.Debug.Write(i++ + " " + line);
+                string line = AchObjToString(achievementData);
+                System.Diagnostics.Debug.Write(line);
+                // limited to 2 requests/second
                 System.Threading.Thread.Sleep(500);
             }
 
-            return achievements;
+            return tableData;
         }
 
-        private string AchObjToString(AchievementObject achievement)
+        public static AchievementObject GetAchievementRow(HtmlNode row)
+        {
+            AchievementObject achievement = new AchievementObject();
+            int index = 0;
+            // parses through each column to initialize the AchievementObject
+            foreach (var column in row.ChildNodes)
+            {
+                if (!string.IsNullOrWhiteSpace(column.InnerText))
+                {
+                    switch (index)
+                    {
+                        // Name
+                        case 0:
+                            achievement.AName = column.InnerText;
+                            break;
+                        // Members
+                        case 1:
+                            achievement.AMembers = column.InnerText;
+                            break;
+                        // Description
+                        case 2:
+                            achievement.ADescription = column.InnerText;
+                            break;
+                        // Category
+                        case 3:
+                            string categoryStr = Regex.Replace(column.InnerHtml, @"\<br\>", "|");
+
+                            achievement.ACategories = categoryStr.Split('|').ToList();
+                            break;
+                        // Subcategory
+                        case 4:
+                            string subcategoryStr = Regex.Replace(column.InnerHtml, @"\<br\>", "|");
+
+                            achievement.ASubcategories = subcategoryStr.Split('|').ToList();
+                            break;
+                        // Runescore
+                        case 5:
+                            achievement.ARunescore = int.Parse(column.InnerText);
+                            break;
+                    }
+                    index++;
+                }
+            }
+            // Link
+            achievement.ALink = row.SelectSingleNode(".//a").Attributes["href"].Value;
+            achievement.ASkillReqs = new List<string>();
+            achievement.AQuestReqs = new List<string>();
+            // Skill and Quest Reqs
+            achievement = GetRequirements(achievement);
+            
+            return achievement;
+        }
+        
+        // used for debugging purposes
+        private static string AchObjToString(AchievementObject achievement)
         {
             string nam = achievement.AName;
             string des = achievement.ADescription;
@@ -134,36 +157,16 @@ namespace AchivementScraper.Domain
             return line;
         }
 
-        private AchievementObject InitAchievementObj(List<string> tableRow)
-        {
-            string name = tableRow.ElementAt(0);
-            string members = tableRow.ElementAt(1);
-            string description = tableRow.ElementAt(2);
-            string category = tableRow.ElementAt(3);
-            string subCategory = tableRow.ElementAt(4);
-            int runescore = int.Parse(tableRow.ElementAt(5));
-            string link = tableRow.ElementAt(6);
-
-            List<string> splitCategory = SplitString(category);
-            List<string> splitSubcategory = SplitString(subCategory);
-            List<string> questReqs = new List<string>();
-            List<string> skillReqs = new List<string>();
-            AchievementObject achievement = new AchievementObject(
-                name, description, runescore, members, link, splitCategory,
-                splitSubcategory, questReqs, skillReqs);
-            return achievement;
-        }
-        
-        private List<string> SplitString(string str)
+        private static List<string> SplitString(string str)
         {
             List<string> split = str.Split('|')
                 .Where(s => !string.IsNullOrEmpty(s)).ToList();
 
             return split;
         }
-
+        
         // goes through each link and gets the requirements
-        private AchievementObject GetRequirementsAsObj(AchievementObject achievement)
+        public static AchievementObject GetRequirements(AchievementObject achievement)
         {
             using (WebClient wb = new WebClient())
             {
@@ -172,41 +175,43 @@ namespace AchivementScraper.Domain
                 htmlDoc.LoadHtml(achievementPageString);
 
                 var infoTable = htmlDoc.DocumentNode.SelectSingleNode("//*[@id=\"infobox-achievement\"]/tbody");
-                var reqNode = infoTable.SelectSingleNode(".//td[@class='qc-active']");
-                // has requirements table
-                if (reqNode != null)
-                {
-                    string data = Regex.Replace(reqNode.InnerText, @"\r|\n|\t", "|");
 
-                    achievement = SkillQuestReq(achievement, data);
+                if (infoTable != null)
+                {
+                    var reqNode = infoTable.SelectSingleNode(".//td[@class='qc-active']");
+                    // has requirements table
+                    if (reqNode != null)
+                    {
+                        string data = Regex.Replace(reqNode.InnerText, @"\r|\n|\t", "|");
+
+                        achievement = SkillQuestReq(achievement, data);
+                    }
                 }
+                
             }
+            // if empty requirements table
             achievement = IfSkillQuestIsEmpty(achievement);
 
             return achievement;
         }
-
-        private AchievementObject SkillQuestReq(AchievementObject achievement, string data)
+        
+        private static AchievementObject SkillQuestReq(AchievementObject achievement, string data)
         {
             var split = SplitString(data);
             // goes through each split string and adds it to the respective requirement
             foreach (var s in split)
             {
-                // matches skill requirements
-                if (Regex.IsMatch(s, @"\d+\s+\w+"))
-                {
-                    // TODO: - need to work on adding "boostable" level requirement
-                    var rmB = Regex.Replace(s, @"\ \[B\]", string.Empty);
-                    achievement.ASkillReqs.Add(rmB);
-                }
+                string trimmedString = s.Trim().Replace("  ", " ");
+                if (skillsList.Any(word => trimmedString.Contains(word)))
+                    achievement.ASkillReqs.Add(trimmedString);
                 else
-                    achievement.AQuestReqs.Add(s);
+                    achievement.AQuestReqs.Add(trimmedString);
             }
             
             return achievement;
         }
 
-        private AchievementObject IfSkillQuestIsEmpty(AchievementObject achievement)
+        private static AchievementObject IfSkillQuestIsEmpty(AchievementObject achievement)
         {
             if (!achievement.AQuestReqs.Any())
                 achievement.AQuestReqs.Add("None");

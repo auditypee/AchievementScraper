@@ -18,6 +18,11 @@ namespace AchievementScraper.Persistence
         public List<string> AQuestReqs { get; set; }
         public List<string> ASkillReqs { get; set; }
 
+        public AchievementObject()
+        {
+
+        }
+
         public AchievementObject(string name, string description, int runescore, 
             string members, string link, List<string> categories, List<string> subcategories, 
             List<string> questReqs, List<string> skillReqs)
