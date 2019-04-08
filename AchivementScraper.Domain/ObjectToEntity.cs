@@ -24,6 +24,8 @@ namespace AchievementScraper.Domain
                 foreach (var achievementObject in achievementObjects)
                     dbHelper.AddAchievement(achievementObject, context);
                 context.SaveChanges();
+
+
             }
         }
     }

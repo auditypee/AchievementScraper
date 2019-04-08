@@ -97,19 +97,19 @@ namespace AchievementScraper.Domain
                             break;
                         // Category
                         case 3:
-                            string categoryStr = Regex.Replace(column.InnerHtml, @"\<br\>", "|");
-
-                            achievement.ACategories = categoryStr.Split('|').ToList();
+                            achievement.ACategories = RemoveTags(column.InnerHtml);
                             break;
                         // Subcategory
                         case 4:
-                            string subcategoryStr = Regex.Replace(column.InnerHtml, @"\<br\>", "|");
-
-                            achievement.ASubcategories = subcategoryStr.Split('|').ToList();
+                            achievement.ASubcategories = RemoveTags(column.InnerHtml);
                             break;
                         // Runescore
                         case 5:
-                            achievement.ARunescore = int.Parse(column.InnerText);
+                            int num = 0;
+                            if (int.TryParse(column.InnerText, out num))
+                                achievement.ARunescore = num;
+                            else
+                                achievement.ARunescore = num;
                             break;
                     }
                     index++;
@@ -125,6 +125,14 @@ namespace AchievementScraper.Domain
             return achievement;
         }
         
+        private static List<string> RemoveTags(string str)
+        {
+            str = Regex.Replace(str, @"\r|\n|\t", string.Empty);
+            str = Regex.Replace(str, @"\<br\>", "|");
+
+            return str.Split('|').ToList();
+        }
+
         // used for debugging purposes
         private static string AchObjToString(AchievementObject achievement)
         {
@@ -138,13 +146,13 @@ namespace AchievementScraper.Domain
             string que = "";
             string ski = "";
             foreach (var c in achievement.ACategories)
-                cat += c + ", ";
+                cat += c + "   ";
             foreach (var s in achievement.ASubcategories)
-                sub += s + ", ";
+                sub += s + "   ";
             foreach (var q in achievement.AQuestReqs)
-                que += q + ", ";
+                que += q + "   ";
             foreach (var s in achievement.ASkillReqs)
-                ski += s + ", ";
+                ski += s + "   ";
 
 
             string line = string.Format(
@@ -202,8 +210,12 @@ namespace AchievementScraper.Domain
             foreach (var s in split)
             {
                 string trimmedString = s.Trim().Replace("  ", " ");
-                if (skillsList.Any(word => trimmedString.Contains(word)))
+
+                if (skillsList.Any(word => trimmedString.Contains(word)) && s.Any(c => char.IsDigit(c)))
+                {
+                    trimmedString = trimmedString.Replace(" [B]", string.Empty);
                     achievement.ASkillReqs.Add(trimmedString);
+                }
                 else
                     achievement.AQuestReqs.Add(trimmedString);
             }

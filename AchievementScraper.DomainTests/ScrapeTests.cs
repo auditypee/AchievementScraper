@@ -184,6 +184,78 @@ namespace AchievementScraper.Domain.Tests
             AssertingAchObj(achievementExpected, achievementActual);
         }
 
+        [Test]
+        public void GetAch_Pick_All()
+        {
+            string pickAll = @"<tr class=''><td><a href='/w/Pick_All' title='Pick All'>Pick All</a></td><td>Yes</td><td>Use a lockpick to open ALL of New Varrock's treasure chests.</td><td>Exploration</td><td>New Varrock</td><td>15<p><br></p></td></tr>";
+            HtmlNode achNode = HtmlNode.CreateNode(pickAll);
+
+            AchievementObject achievementActual = Scrape.GetAchievementRow(achNode);
+            AchievementObject achievementExpected = new AchievementObject
+            {
+                AName = "Pick All",
+                AMembers = "Yes",
+                ADescription = "Use a lockpick to open ALL of New Varrock's treasure chests.",
+                ACategories = new List<string>
+                {
+                    "Exploration"
+                },
+                ASubcategories = new List<string>
+                {
+                    "New Varrock"
+                },
+                ARunescore = 15,
+                ALink = "/w/Pick_All",
+                AQuestReqs = new List<string>
+                {
+                    "Dimension of Disaster: Shield of Arrav (partial)",
+                    "Dimension of Disaster: Demon Slayer (partial)"
+                },
+                ASkillReqs = new List<string>
+                {
+                    "70 Thieving"
+                }
+            };
+
+            AssertingAchObj(achievementExpected, achievementActual);
+        }
+
+        [Test]
+        public void GetAch_No_Smoke_Without_Pyre()
+        {
+            string noSmokeWithoutPyre = @"<tr class=''><td><a href='/w/No_Smoke_Without_Pyre' title='No Smoke Without Pyre'>No Smoke Without Pyre</a></td><td>Yes</td><td>Make a pyre ship from magic logs.</td><td>Exploration</td><td>Fremennik</td><td>25<p><br></p></td></tr>";
+            HtmlNode achNode = HtmlNode.CreateNode(noSmokeWithoutPyre);
+
+            AchievementObject achievementActual = Scrape.GetAchievementRow(achNode);
+            AchievementObject achievementExpected = new AchievementObject
+            {
+                AName = "No Smoke Without Pyre",
+                AMembers = "Yes",
+                ADescription = "Make a pyre ship from magic logs.",
+                ACategories = new List<string>{
+                    "Exploration"
+                },
+                ASubcategories = new List<string>
+                {
+                    "Fremennik"
+                },
+                ARunescore = 25,
+                ALink = "/w/No_Smoke_Without_Pyre",
+                AQuestReqs = new List<string>
+                {
+                    "Completed Firemaking section of Barbarian Training"
+                },
+                ASkillReqs = new List<string>
+                {
+                    "85 Crafting",
+                    "85 Firemaking"
+                }
+
+            };
+
+            AssertingAchObj(achievementExpected, achievementActual);
+        }
+
         public void AssertingAchObj(AchievementObject achievementExpected, AchievementObject achievementActual)
         {
             Assert.AreEqual(achievementExpected.AName, achievementActual.AName);
