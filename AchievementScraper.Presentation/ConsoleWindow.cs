@@ -1,4 +1,4 @@
-﻿using AchivementScraper.Domain;
+﻿using AchievementScraper.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;

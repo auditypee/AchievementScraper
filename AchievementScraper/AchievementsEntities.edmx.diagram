@@ -4,15 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4cd8000753c04188b6d710ca9c4abc96" Name="Diagram1">
-        <EntityTypeShape EntityType="AchievementsDatabaseModel.Achievement" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
+      <Diagram DiagramId="dc53046f3fdc4f719b4ae88822ec7005" Name="Diagram1">
+        <EntityTypeShape EntityType="AchievementsDatabaseModel.Achievement" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="true" />
         <EntityTypeShape EntityType="AchievementsDatabaseModel.Category" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="AchievementsDatabaseModel.QuestReq" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AchievementsDatabaseModel.QuestReq" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AchievementsDatabaseModel.SkillReq" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AchievementsDatabaseModel.Subcategory" Width="1.5" PointX="5.25" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AchievementsDatabaseModel.sysdiagram" Width="1.5" PointX="5.75" PointY="5.75" IsExpanded="true" />
         <AssociationConnector Association="AchievementsDatabaseModel.FK_QuestReq_ToAchievement" ManuallyRouted="false" />
-        <AssociationConnector Association="AchievementsDatabaseModel.FK_SkillReq_ToAchievement" ManuallyRouted="false" />
+        <AssociationConnector Association="AchievementsDatabaseModel.FK_SkillsReq_ToAchievement" ManuallyRouted="false" />
         <AssociationConnector Association="AchievementsDatabaseModel.FK_Subcategory_ToCategory" ManuallyRouted="false" />
         <AssociationConnector Association="AchievementsDatabaseModel.AchievementsCategories" ManuallyRouted="false" />
         <AssociationConnector Association="AchievementsDatabaseModel.AchievementsSubcategories" ManuallyRouted="false" />

@@ -7,7 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchievementScraper.Persiste
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchievementScraper.Presentation", "AchievementScraper.Presentation\AchievementScraper.Presentation.csproj", "{6E127401-0FC1-4B37-A275-00FD9397AF29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchivementScraper.Domain", "AchivementScraper.Domain\AchivementScraper.Domain.csproj", "{576D99C8-CD2C-4234-852D-B3E5AF34533C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchievementScraper.Domain", "AchivementScraper.Domain\AchievementScraper.Domain.csproj", "{576D99C8-CD2C-4234-852D-B3E5AF34533C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchievementScraper.DomainTests", "AchievementScraper.DomainTests\AchievementScraper.DomainTests.csproj", "{2CD3112A-43C7-4551-ADE3-E2C680556480}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{576D99C8-CD2C-4234-852D-B3E5AF34533C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{576D99C8-CD2C-4234-852D-B3E5AF34533C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{576D99C8-CD2C-4234-852D-B3E5AF34533C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CD3112A-43C7-4551-ADE3-E2C680556480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CD3112A-43C7-4551-ADE3-E2C680556480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CD3112A-43C7-4551-ADE3-E2C680556480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CD3112A-43C7-4551-ADE3-E2C680556480}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

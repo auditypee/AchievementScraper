@@ -14,9 +14,8 @@ namespace AchievementScraper.Persistence
     
     public partial class SkillReq
     {
-        public int SkillsReqId { get; set; }
-        public string Skill { get; set; }
-        public int Level { get; set; }
+        public int SkillReqId { get; set; }
+        public string LevelSkill { get; set; }
         public int AchievementId { get; set; }
     
         public virtual Achievement Achievement { get; set; }

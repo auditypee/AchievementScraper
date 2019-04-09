@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 using AchievementScraper.Persistence;
 
-namespace AchivementScraper.Domain
+namespace AchievementScraper.Domain
 {
     public class ObjectToEntity
     {
         public ObjectToEntity()
         {
-            Scrape scraper = new Scrape();
-            AddObjectToDatabase(scraper.AchievementObjects);
+            Scrape.BeginScraping();
+            AddObjectToDatabase(Scrape.AchievementObjects);
         }
 
         public void AddObjectToDatabase(List<AchievementObject> achievementObjects)
@@ -24,6 +24,8 @@ namespace AchivementScraper.Domain
                 foreach (var achievementObject in achievementObjects)
                     dbHelper.AddAchievement(achievementObject, context);
                 context.SaveChanges();
+
+
             }
         }
     }

@@ -60,11 +60,10 @@ namespace AchievementScraper.Persistence
             {
                 if (skillReq != "None")
                 {
-                    SkillReq cSkillReq = new SkillReq();
-                    List<string> split = SplitSkillLevel(skillReq);
-
-                    cSkillReq.Level = int.Parse(split.ElementAt(0));
-                    cSkillReq.Skill = split.ElementAt(1);
+                    SkillReq cSkillReq = new SkillReq
+                    {
+                        LevelSkill = skillReq
+                    };
 
                     dbSkillReqs.Add(cSkillReq);
                     skillReqList.Add(cSkillReq);
@@ -107,18 +106,6 @@ namespace AchievementScraper.Persistence
             }
 
             return subcategoryList;
-        }
-
-        private List<string> SplitSkillLevel(string str)
-        {
-            List<string> skillLevel = new List<string>();
-            string level = Regex.Match(str, @"\d+").Value;
-            string skill = Regex.Match(str, @"[A-Za-z]+\s*[A-Za-z]*").Value;
-
-            skillLevel.Add(level);
-            skillLevel.Add(skill);
-
-            return skillLevel;
         }
     }
 }
